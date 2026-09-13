@@ -15,6 +15,8 @@ All notebooks require:
 - `scipy`
 - `matplotlib`
 - `jupyter`
+- `tqdm`
+- `scikit-learn`
 
 ---
 
@@ -28,13 +30,13 @@ python -m venv .venv
 source .venv/bin/activate
 
 # Install dependencies
-pip install numpy scipy matplotlib jupyter
+pip install numpy scipy matplotlib jupyter tqdm scikit-learn
 ```
 
 If you already have an active virtual environment, just install the packages directly:
 
 ```bash
-pip install numpy scipy matplotlib jupyter
+pip install numpy scipy matplotlib jupyter tqdm scikit-learn
 ```
 
 ---
@@ -50,8 +52,8 @@ jupyter notebook <notebook_name>.ipynb
 For example:
 
 ```bash
-jupyter notebook demo_oscilator.ipynb
-jupyter notebook generalised_division.ipynb
+jupyter notebook demo_oscillator.ipynb
+jupyter notebook generalized_division.ipynb
 jupyter notebook univariate_regression.ipynb
 jupyter notebook interpolation.ipynb
 jupyter notebook multivariate_regression_batch_size.ipynb
@@ -67,8 +69,8 @@ jupyter notebook
 
 For the clearest understanding of the project, the notebooks are best read in this order:
 
-1. `demo_oscilator.ipynb`  understand the oscillator clock
-2. `generalised_division.ipynb` understand arithmetic in CRNs
+1. `demo_oscillator.ipynb`  understand the oscillator clock
+2. `generalized_division.ipynb` understand arithmetic in CRNs
 3. `univariate_regression.ipynb` regression with one feature
 4. `multivariate_regression_batch_size.ipynb` regression with multiple features and batch effects
 5. `interpolation.ipynb` — function approximation via CRN
@@ -114,7 +116,7 @@ The notebooks producesplots saved in folder plots.
 ## Notebooks
 We have explained the details of reactions in the paper "Implementation of Linear Regression and Linear Interpolation using Reaction Networks"
 
-### 1. `generalised_division.ipynb` — CRN-Based Division
+### 1. `generalized_division.ipynb` — CRN-Based Division
 
 Implements **approximate division** of two signed values entirely within a CRN.
 
@@ -132,7 +134,7 @@ Implements **approximate division** of two signed values entirely within a CRN.
 Implements **single-feature linear regression** (weight `w`, bias `b`) via the closed-form formula, computed as a CRN.
 
 - Trains on a synthetic 1D dataset of N=40 points using a 10-slot CRN program that computes the equations described in the paper.
-- The CRN sequentially computes aggregate sums (ΣX, ΣY, ΣXY, ΣX²),numerator/denominator, and divides using the generalised-division module.
+- The CRN sequentially computes aggregate sums (ΣX, ΣY, ΣXY, ΣX²),numerator/denominator, and divides using the generalized-division module.
 - Uses dual-rail encoding for all signed quantities (parameters, inputs, aggregates).
 - Example result: `w = 2.5167`, `b = -1.0865`, matching the python implemented solutions.
 - Produces a regression fit plot (saved as `regression_fit.pdf`).
@@ -143,7 +145,7 @@ Implements **single-feature linear regression** (weight `w`, bias `b`) via the c
 
 Demonstrates **linear interpolation** as a CRN, given two known points (x₀, y₀) and (x₁, y₁) and a query x, computes `y = y₀ + (x − x₀)/(x₁ − x₀)·(y₁ − y₀)`.
 
-- Reformulates the interpolation formula as a ratio of linear cross-products and computes it using the generalised-division CRN in 6 oscillator slots.
+- Reformulates the interpolation formula as a ratio of linear cross-products and computes it using the generalized-division CRN in 6 oscillator slots.
 - Example run: known points (1.0, 2.0) and (3.0, 6.0), query x = 2.0 → CRN returns y ≈ 3.9971 (analytic: 4.0).
 - Sweeps 12 query x-values across the interval [0.5, 3.5] and plots CRN output vs. the exact linear interpolant.
 - Produces an accuracy plot (saved as `interpolation_accuracy.pdf`).
@@ -160,7 +162,7 @@ Extends linear regression to **multiple input features**.
 - Constructs a `BatchSchedule` where the effective batch size is the largest divisor of `N` not exceeding the requested `B`.
 - Produces multi-variate convergence plots for W1, W2, b, and MSE (saved as `multi_variate_plots.pdf` / `multi_variate_plots.png`).
 
-### 5. `demo_oscilator.ipynb` — Hopf Oscillator Demo
+### 5. `demo_oscillator.ipynb` — Hopf Oscillator Demo
 
 A standalone demonstration of the **dual-rail Hopf oscillator** used as a continuous clock signal in the other notebooks.
 
